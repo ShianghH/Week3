@@ -3,14 +3,23 @@
 
 //第一階段：新增課程購買記錄（優惠定價）
 const purchaseRecords = []; // 儲存每筆記錄
-function addPurchaseRecord(name,course){
-    //防呆
+
+function verify(name,course){
     if(name==undefined || name=="" || typeof course !=="number"
         || course<0
     ){
         console.log(`輸入錯誤，請輸入有效的會員名稱和課程數量。`)
-        return;
+        return ;
     }
+    return true;
+}
+
+
+function addPurchaseRecord(name,course){
+    if (!verify(name, course)) {
+        return; // 若輸入不符合條件則不執行後續程式
+    }
+    
 
     //課程優惠單價
     let coursePrice = 0 ;
@@ -27,10 +36,10 @@ function addPurchaseRecord(name,course){
     // console.log(totalPrice)驗證
     //儲存每筆資料
     purchaseRecords.push({
-        name:name,
-        course:course,
-        coursePrice:coursePrice,
-        totalPrice:totalPrice
+        name,
+        course,
+        coursePrice,
+        totalPrice
     })
     console.log(`新增購買記錄成功！會員${name}購買${course}堂課，總金額為${totalPrice} 元。`)
 }
@@ -57,7 +66,7 @@ function filterNoPurchaseMember(){
     })
 
     const noPurchaseMember = members.filter(function(member){
-        return purchaseMember.includes(member) === false;
+        return !purchaseMember.includes(member);
     })
     console.log(`未購買課程的會員有${noPurchaseMember}`)
 
